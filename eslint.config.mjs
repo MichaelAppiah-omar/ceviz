@@ -26,7 +26,7 @@ export default antfu({
 
     // HTML reports
     '**/*-report.html',
-    '**/nuxt-framework-analysis.html',
+    '**/*-analysis.html',
 
     // Test projects
     '**/packages/test-project/**',

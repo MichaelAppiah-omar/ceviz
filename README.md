@@ -360,14 +360,14 @@ jobs:
 
 ## Real-World Results
 
-Ceviz analyzed **Nuxt 4.2.0** and found **243 performance issues**:
-- 85x Array operations in loop (O(n*m))
-- 73x Nested loops (O(n²))
-- 69x Sequential async operations (waterfalls)
-- 14x Synchronous file operations
-- 2x Memory leaks
+Ceviz can analyze any npm package and detect performance issues:
+- Array operations in loop (O(n*m))
+- Nested loops (O(n²))
+- Sequential async operations (waterfalls)
+- Synchronous file operations
+- Memory leaks
 
-See the [interactive HTML report](nuxt-framework-analysis.html) for details.
+Run `ceviz analyze --html` to generate an interactive HTML report with detailed findings.
 
 ## Roadmap
 
