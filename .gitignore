@@ -8,10 +8,14 @@ dist
 build
 coverage
 
-# Ceviz reports (keep example report only)
+# Ceviz reports and test outputs
 *-report.html
 *-analysis.html
-!nuxt-framework-analysis.html
+*.json
+!package.json
+!package-lock.json
+!pnpm-lock.yaml
+!tsconfig.json
 
 # Ceviz config (keep example only)
 ceviz.config.ts
