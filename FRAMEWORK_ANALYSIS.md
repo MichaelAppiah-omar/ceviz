@@ -28,7 +28,7 @@ ceviz analyze ./my-project --scan-deps --target-deps nuxt,vite
 pnpm exec ceviz analyze . --scan-deps --target-deps nuxt
 
 # Or using node directly
-node packages/core/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
+node src/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
 
 # Or if globally installed
 ceviz analyze . --scan-deps --target-deps nuxt

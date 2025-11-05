@@ -41,7 +41,7 @@
 
 ## 📊 Test Results
 
-### Test Project (packages/test-project)
+### Test Project (examples/test-project)
 - **Files analyzed**: 1
 - **Issues found**: 7 (6 critical, 1 warning)
 - **Score**: 37/100 (Grade: F)
@@ -54,7 +54,7 @@
 - 1x Sync file operation (readFileSync)
 - 1x Sequential async (waterfall)
 
-### Nuxt Test Project (packages/nuxt-test)
+### Nuxt Test Project (examples/nuxt-test)
 - **Files analyzed**: 6 (middleware, composables, server, components, app, config)
 - **Issues found**: 9 (7 critical, 2 warnings)
 - **Score**: 24/100 (Grade: F)
@@ -103,7 +103,7 @@ ceviz analyze ./my-project
 ceviz analyze ./my-project --json report.json
 
 # From workspace
-pnpm analyze packages/nuxt-test
+pnpm analyze examples/nuxt-test
 ```
 
 ## 📦 Package Structure

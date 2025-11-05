@@ -29,8 +29,8 @@ export default antfu({
     '**/*-analysis.html',
 
     // Test projects
-    '**/packages/test-project/**',
-    '**/packages/nuxt-test/**',
+    '**/examples/test-project/**',
+    '**/examples/nuxt-test/**',
 
     // Documentation
     'README.md',

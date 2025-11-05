@@ -10,10 +10,10 @@
   "scripts": {
     "build": "pnpm --filter ceviz build",
     "dev": "pnpm --filter ceviz dev",
-    "analyze": "pnpm --filter ceviz build && node packages/core/dist/cli.mjs analyze",
+    "analyze": "pnpm --filter ceviz build && node src/dist/cli.mjs analyze",
     "test": "pnpm --filter ceviz test",
-    "bumpp": "bumpp package.json packages/*/package.json",
-    "release": "pnpm bumpp && cd packages/core && pnpm pu:release",
+    "bumpp": "bumpp package.json src/package.json",
+    "release": "pnpm bumpp && cd src && pnpm pu:release",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
