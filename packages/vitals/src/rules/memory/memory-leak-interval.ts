@@ -1,4 +1,5 @@
 import type { Rule, Issue, RuleContext } from '../../types.js'
+import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
  * Detect setInterval/setTimeout without clearInterval/clearTimeout
@@ -27,12 +28,12 @@ export const memoryLeakIntervalRule: Rule = {
         const calleeName = callee?.name || callee?.property?.name
 
         if (calleeName === 'setInterval' || calleeName === 'setTimeout') {
-          const line = node.loc?.start.line || 0
+          const { line } = getNodeLocation(node, code)
           intervals.add(`${scope}:${line}`)
         }
 
         if (calleeName === 'clearInterval' || calleeName === 'clearTimeout') {
-          const line = node.loc?.start.line || 0
+          const { line } = getNodeLocation(node, code)
           cleared.add(`${scope}:${line}`)
         }
       }

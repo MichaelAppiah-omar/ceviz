@@ -1,4 +1,5 @@
 import type { Rule, Issue, RuleContext } from '../../types.js'
+import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
  * Detect nested loops (O(n²) or worse)
@@ -31,8 +32,7 @@ export const nestedLoopsRule: Rule = {
 
       // If we're 2+ levels deep, it's O(n²) or worse
       if (newDepth >= 2 && isLoop) {
-        const line = node.loc?.start.line || 0
-        const column = node.loc?.start.column || 0
+        const { line, column } = getNodeLocation(node, code)
 
         // Get the code snippet
         const lines = code.split('\n')

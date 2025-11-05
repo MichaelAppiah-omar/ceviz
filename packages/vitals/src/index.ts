@@ -7,6 +7,7 @@ export * from './types.js'
 export { allRules } from './rules/index.js'
 export { ProjectScanner, type ScanOptions } from './scanner.js'
 export { CodeAnalyzer } from './analyzer.js'
+export { defineConfig, resolveConfig, mergeConfig } from './config.js'
 
 export interface AnalyzeOptions extends ScanOptions {
   // Future options can be added here

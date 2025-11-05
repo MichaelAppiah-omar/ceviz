@@ -121,3 +121,43 @@ export interface ProjectContext {
   dependencies: Record<string, string>
   devDependencies: Record<string, string>
 }
+
+// Plugin System
+export interface VitalsPlugin {
+  name: string
+  version?: string
+  rules?: Rule[]
+  reporters?: Reporter[]
+  setup?: (context: PluginContext) => void | Promise<void>
+}
+
+export interface PluginContext {
+  addRule: (rule: Rule) => void
+  addReporter: (reporter: Reporter) => void
+  hooks: any // Hookable instance
+  config: VitalsConfig
+  projectContext: ProjectContext
+}
+
+export interface Reporter {
+  name: string
+  report: (result: AnalysisResult, outputPath?: string) => void | Promise<void>
+}
+
+export interface VitalsConfig {
+  plugins?: (VitalsPlugin | string)[]
+  rules?: RuleConfig
+  reporters?: string[]
+  scanDeps?: boolean
+  targetDeps?: string[]
+}
+
+export interface RuleConfig {
+  [ruleId: string]: 'off' | 'warn' | 'error' | RuleOptions
+}
+
+export interface RuleOptions {
+  severity?: 'critical' | 'warning' | 'info'
+  enabled?: boolean
+  options?: Record<string, any>
+}

@@ -7,3 +7,14 @@ dist
 .next
 build
 coverage
+
+# Vitals reports (keep example report only)
+*-report.html
+*-analysis.html
+!nuxt-framework-analysis.html
+
+# Vitals config (keep example only)
+vitals.config.ts
+vitals.config.js
+vitals.config.mjs
+!vitals.config.example.ts

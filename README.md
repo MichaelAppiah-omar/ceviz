@@ -15,9 +15,11 @@ Vitals automatically scans your codebase and detects performance issues that slo
 - ✅ **Zero configuration** - Works out of the box
 - ⚡ **Blazing fast** - Powered by OXC (Rust-based parser)
 - 🎯 **Accurate detection** - AST-based analysis finds real issues
-- 📊 **Beautiful reports** - Console and JSON output
+- 📊 **Beautiful reports** - Console, JSON, and interactive HTML output
 - 🔧 **Actionable suggestions** - Get specific fixes for each issue
 - 🚀 **CI/CD ready** - Exit codes for automated checks
+- 🔌 **Plugin system** - Create custom rules and reporters
+- 🎨 **VSCode integration** - Click to open files from HTML reports
 
 ## Installation
 
@@ -51,21 +53,67 @@ pnpm exec vitals analyze --json
 
 # Save JSON to file
 pnpm exec vitals analyze --json report.json
+
+# Generate interactive HTML report (auto-opens in browser)
+pnpm exec vitals analyze --html
+pnpm exec vitals analyze --html report.html
+
+# Use custom config file
+pnpm exec vitals analyze --config vitals.config.ts
 ```
+
+### Configuration File
+
+Create `vitals.config.ts` in your project root for full **TypeScript autocomplete and type checking**:
+
+```typescript
+import { defineConfig } from '@vitals/analyzer'
+
+export default defineConfig({
+  // Load custom plugins
+  plugins: [
+    'vitals-plugin-vue',
+    './my-custom-plugin.js'
+  ],
+
+  // Configure rules
+  rules: {
+    'nested-loops': 'error',
+    'no-console-log': 'off'
+  },
+
+  // Output reporters
+  reporters: ['console', 'html'],
+
+  // Framework analysis
+  scanDeps: false,
+  targetDeps: ['nuxt', 'vite']
+})
+```
+
+**Benefits of `defineConfig`:**
+- ✅ Full TypeScript autocomplete
+- ✅ Type checking for all options
+- ✅ IntelliSense for rule names and severity levels
+- ✅ Nuxt-style DX powered by [c12](https://github.com/unjs/c12)
 
 ### Framework Analysis (NEW!)
 
-Analyze framework code in node_modules to find performance issues:
+Analyze framework code in node_modules to find performance issues and report them to framework maintainers:
 
 ```bash
-# Analyze Nuxt core
-pnpm exec vitals analyze . --scan-deps --target-deps nuxt
+# Analyze Nuxt core (run from project directory with node_modules)
+cd packages/nuxt-test
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
+
+# Generate interactive HTML report
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --html
 
 # Analyze multiple frameworks
-pnpm exec vitals analyze . --scan-deps --target-deps nuxt,vite,vue
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt,vite,vue
 
 # Generate JSON report for GitHub issues
-pnpm exec vitals analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
+node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
 ```
 
 ### Example Output
@@ -231,6 +279,61 @@ Vitals currently has **5 core rules**:
 
 More rules coming soon!
 
+## Plugin System
+
+Vitals supports a powerful plugin system for creating custom rules and reporters.
+
+### Creating a Custom Plugin
+
+```typescript
+// vitals-plugins/my-plugin.ts
+import type { VitalsPlugin, Rule } from '@vitals/analyzer'
+
+const myRule: Rule = {
+  id: 'no-console-log',
+  name: 'No Console Log',
+  category: 'framework',
+  severity: 'warning',
+  description: 'Detects console.log in production code',
+  enabled: true,
+  check: (context) => {
+    // Your analysis logic
+    return []
+  },
+}
+
+const myPlugin: VitalsPlugin = {
+  name: 'my-custom-plugin',
+  version: '1.0.0',
+  rules: [myRule],
+  setup: async (context) => {
+    // Listen to hooks
+    context.hooks.hook('analysis:start', () => {
+      console.log('Starting analysis...')
+    })
+  },
+}
+
+export default myPlugin
+```
+
+### Using Plugins
+
+```typescript
+// vitals.config.ts
+import { defineConfig } from '@vitals/analyzer'
+import myPlugin from './vitals-plugins/my-plugin.js'
+
+export default defineConfig({
+  plugins: [
+    myPlugin,
+    'vitals-plugin-vue', // Or from npm
+  ],
+})
+```
+
+See [PLUGIN_API.md](PLUGIN_API.md) for complete plugin documentation.
+
 ## CI/CD Integration
 
 Vitals exits with code 1 if critical issues are found, making it perfect for CI/CD:
@@ -249,9 +352,20 @@ jobs:
       - run: pnpm dlx @vitals/analyzer analyze
 ```
 
+## Real-World Results
+
+Vitals analyzed **Nuxt 4.2.0** and found **243 performance issues**:
+- 85x Array operations in loop (O(n*m))
+- 73x Nested loops (O(n²))
+- 69x Sequential async operations (waterfalls)
+- 14x Synchronous file operations
+- 2x Memory leaks
+
+See the [interactive HTML report](nuxt-framework-analysis.html) for details.
+
 ## Roadmap
 
-- [ ] HTML report with interactive visualization
+- [x] HTML report with interactive visualization
 - [ ] More rules (regex catastrophic backtracking, excessive re-renders, etc.)
 - [ ] Auto-fix capabilities
 - [ ] Framework-specific rules (Nuxt, Next.js, Vue, React)

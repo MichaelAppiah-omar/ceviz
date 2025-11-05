@@ -1,4 +1,5 @@
 import type { Rule, Issue, RuleContext } from '../../types.js'
+import { getNodeLocation } from '../../utils/ast-helpers.js'
 
 /**
  * Detect .find()/.filter()/.includes() inside loops
@@ -36,8 +37,7 @@ export const arrayFindInLoopRule: Rule = {
           const methodName = callee.property?.name || callee.property?.value
 
           if (['find', 'filter', 'includes', 'indexOf', 'findIndex', 'some', 'every'].includes(methodName)) {
-            const line = node.loc?.start.line || 0
-            const column = node.loc?.start.column || 0
+            const { line, column } = getNodeLocation(node, code)
             const lines = code.split('\n')
             const codeSnippet = lines[line - 1] || ''
 

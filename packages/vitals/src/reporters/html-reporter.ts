@@ -1,0 +1,573 @@
+import type { AnalysisResult } from '../types.js'
+import { writeFileSync } from 'fs'
+import { basename } from 'path'
+import open from 'open'
+
+export class HtmlReporter {
+  async report(result: AnalysisResult, outputPath: string, autoOpen = true): Promise<void> {
+    const html = this.generateHtml(result)
+    writeFileSync(outputPath, html, 'utf-8')
+
+    console.log(`\n✅ HTML report saved to: ${outputPath}`)
+
+    if (autoOpen) {
+      console.log('🌐 Opening in browser...\n')
+      await open(outputPath)
+    }
+  }
+
+  private generateHtml(result: AnalysisResult): string {
+    const { summary, issues, metrics } = result
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitals Performance Report</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f1419;
+      color: #e6edf3;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #30363d;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #8b949e;
+      font-size: 1.1rem;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #58a6ff;
+    }
+
+    .card-title {
+      color: #8b949e;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .card-label {
+      color: #8b949e;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .score-card .card-value {
+      background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .critical { color: #f85149; }
+    .warning { color: #d29922; }
+    .info { color: #58a6ff; }
+    .success { color: #3fb950; }
+
+    .filters {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-label {
+      color: #8b949e;
+      font-weight: 600;
+    }
+
+    .filter-btn {
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .filter-btn:hover {
+      border-color: #58a6ff;
+      background: #1f6feb;
+    }
+
+    .filter-btn.active {
+      background: #1f6feb;
+      border-color: #58a6ff;
+    }
+
+    input[type="search"] {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      width: 300px;
+    }
+
+    input[type="search"]:focus {
+      outline: none;
+      border-color: #58a6ff;
+    }
+
+    .issues-table {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #0d1117;
+      border-bottom: 1px solid #30363d;
+    }
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #e6edf3;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #21262d;
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #0d1117;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .severity-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .severity-critical {
+      background: rgba(248, 81, 73, 0.15);
+      color: #f85149;
+      border: 1px solid rgba(248, 81, 73, 0.3);
+    }
+
+    .severity-warning {
+      background: rgba(210, 153, 34, 0.15);
+      color: #d29922;
+      border: 1px solid rgba(210, 153, 34, 0.3);
+    }
+
+    .severity-info {
+      background: rgba(88, 166, 255, 0.15);
+      color: #58a6ff;
+      border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .file-path {
+      color: #8b949e;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-size: 0.813rem;
+      word-break: break-all;
+    }
+
+    .vscode-link {
+      color: #58a6ff;
+      text-decoration: none;
+      transition: all 0.2s;
+      border-bottom: 1px solid transparent;
+    }
+
+    .vscode-link:hover {
+      color: #79c0ff;
+      border-bottom-color: #58a6ff;
+    }
+
+    .vscode-link:active {
+      color: #1f6feb;
+    }
+
+    .issue-message {
+      color: #e6edf3;
+      margin-bottom: 0.5rem;
+    }
+
+    .issue-suggestion {
+      color: #8b949e;
+      font-size: 0.813rem;
+    }
+
+    .category-icon {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      text-align: center;
+      border-radius: 4px;
+      background: #21262d;
+      margin-right: 0.5rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #8b949e;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #30363d;
+      text-align: center;
+      color: #8b949e;
+      font-size: 0.875rem;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .metric-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .metric-title {
+      color: #e6edf3;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .metric-item:last-child {
+      border-bottom: none;
+    }
+
+    .metric-label {
+      color: #8b949e;
+    }
+
+    .metric-value {
+      color: #e6edf3;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🩺 Vitals Performance Report</h1>
+      <p class="subtitle">Generated on ${new Date().toLocaleString()}</p>
+    </header>
+
+    <div class="summary-cards">
+      <div class="card">
+        <div class="card-title">Files Analyzed</div>
+        <div class="card-value">${summary.analyzedFiles}</div>
+        <div class="card-label">Total files scanned</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Total Issues</div>
+        <div class="card-value ${summary.totalIssues === 0 ? 'success' : 'critical'}">${summary.totalIssues}</div>
+        <div class="card-label">
+          <span class="critical">${summary.critical} critical</span> ·
+          <span class="warning">${summary.warnings} warnings</span>
+        </div>
+      </div>
+
+      <div class="card score-card">
+        <div class="card-title">Performance Score</div>
+        <div class="card-value">${summary.score}/100</div>
+        <div class="card-label">Grade: ${summary.grade}</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Analysis Time</div>
+        <div class="card-value">${result.duration}ms</div>
+        <div class="card-label">Blazing fast ⚡</div>
+      </div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-title">⚡ CPU Metrics</div>
+        <div class="metric-item">
+          <span class="metric-label">Worst Complexity</span>
+          <span class="metric-value">${metrics.cpu.worstComplexity}</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Hotspots</span>
+          <span class="metric-value">${metrics.cpu.hotspots.length}</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">💾 Memory Metrics</div>
+        <div class="metric-item">
+          <span class="metric-label">Est. Baseline</span>
+          <span class="metric-value">${metrics.memory.estimatedBaseline}</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Memory Leaks</span>
+          <span class="metric-value ${metrics.memory.leaks > 0 ? 'critical' : 'success'}">${metrics.memory.leaks}</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">📡 I/O Metrics</div>
+        <div class="metric-item">
+          <span class="metric-label">Blocking Ops</span>
+          <span class="metric-value ${metrics.io.blockingOps > 0 ? 'critical' : 'success'}">${metrics.io.blockingOps}</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Waterfalls</span>
+          <span class="metric-value">${metrics.io.waterfalls}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <span class="filter-label">Filter:</span>
+        <button class="filter-btn active" data-filter="all">All (${issues.length})</button>
+        <button class="filter-btn" data-filter="critical">Critical (${summary.critical})</button>
+        <button class="filter-btn" data-filter="warning">Warning (${summary.warnings})</button>
+        <button class="filter-btn" data-filter="cpu">⚡ CPU (${issues.filter(i => i.category === 'cpu').length})</button>
+        <button class="filter-btn" data-filter="memory">💾 Memory (${issues.filter(i => i.category === 'memory').length})</button>
+        <button class="filter-btn" data-filter="io">📡 I/O (${issues.filter(i => i.category === 'io').length})</button>
+      </div>
+      <div class="filter-group" style="margin-top: 1rem;">
+        <input type="search" id="searchInput" placeholder="Search issues or files...">
+      </div>
+    </div>
+
+    <div class="issues-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Category</th>
+            <th>Issue</th>
+            <th>File</th>
+            <th>Suggestion</th>
+          </tr>
+        </thead>
+        <tbody id="issuesBody">
+          ${issues.length === 0 ? `
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">
+                  <div class="empty-state-icon">🎉</div>
+                  <h3>No performance issues found!</h3>
+                  <p>Your code looks great!</p>
+                </div>
+              </td>
+            </tr>
+          ` : issues.map(issue => `
+            <tr data-severity="${issue.severity}" data-category="${issue.category}">
+              <td>
+                <span class="severity-badge severity-${issue.severity}">${issue.severity}</span>
+              </td>
+              <td>
+                <span class="category-icon">${this.getCategoryIcon(issue.category)}</span>
+                ${issue.category}
+              </td>
+              <td>
+                <div class="issue-message">${issue.message}</div>
+                ${issue.impact.complexity ? `<div class="issue-suggestion">Complexity: <strong>${issue.impact.complexity}</strong></div>` : ''}
+                ${issue.impact.estimate ? `<div class="issue-suggestion">Impact: ${issue.impact.estimate}</div>` : ''}
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="${this.getVSCodeLink(issue.location.file, issue.location.line, issue.location.column)}"
+                     class="vscode-link"
+                     title="Open in VSCode: ${issue.location.file}:${issue.location.line}:${issue.location.column}">
+                    ${this.shortenPath(issue.location.file)}
+                  </a>
+                </div>
+                ${issue.location.line > 0 ? `<div class="issue-suggestion">Line ${issue.location.line}${issue.location.column > 0 ? `:${issue.location.column}` : ''}</div>` : ''}
+              </td>
+              <td>
+                <div class="issue-suggestion">${issue.suggestion?.fix || 'No suggestion available'}</div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>Generated by <strong>Vitals</strong> - Performance Analyzer for Node.js/Nuxt</p>
+      <p>Powered by OXC (Rust-based parser)</p>
+    </footer>
+  </div>
+
+  <script>
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('searchInput');
+    const rows = document.querySelectorAll('#issuesBody tr[data-severity]');
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value.toLowerCase();
+      applyFilters();
+    });
+
+    function applyFilters() {
+      rows.forEach(row => {
+        const severity = row.dataset.severity;
+        const category = row.dataset.category;
+        const text = row.textContent.toLowerCase();
+
+        const matchesFilter = currentFilter === 'all' ||
+                            severity === currentFilter ||
+                            category === currentFilter;
+        const matchesSearch = currentSearch === '' || text.includes(currentSearch);
+
+        row.style.display = matchesFilter && matchesSearch ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>`
+  }
+
+  private getCategoryIcon(category: string): string {
+    const icons: Record<string, string> = {
+      cpu: '⚡',
+      memory: '💾',
+      io: '📡',
+      bundle: '📦',
+      framework: '🔧',
+    }
+    return icons[category] || '●'
+  }
+
+  private shortenPath(path: string): string {
+    const parts = path.split('/')
+    if (parts.length > 5) {
+      return '.../' + parts.slice(-4).join('/')
+    }
+    return path
+  }
+
+  private getVSCodeLink(file: string, line: number, column: number): string {
+    // VSCode URL format: vscode://file/absolute/path:line:column
+    const lineStr = line > 0 ? `:${line}` : ''
+    const colStr = column > 0 ? `:${column}` : ''
+    return `vscode://file${file}${lineStr}${colStr}`
+  }
+}
