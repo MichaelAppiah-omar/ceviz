@@ -1,21 +1,25 @@
 {
   "name": "ceviz",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "author": "",
+  "license": "MIT",
+  "keywords": [],
   "scripts": {
     "build": "pnpm --filter ceviz build",
     "dev": "pnpm --filter ceviz dev",
     "analyze": "pnpm --filter ceviz build && node packages/vitals/dist/cli.mjs analyze",
     "test": "pnpm --filter ceviz test",
     "bumpp": "bumpp package.json packages/*/package.json",
-    "release": "cd packages/vitals && pnpm pu:release"
+    "release": "cd packages/vitals && pnpm pu:release",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "packageManager": "pnpm@10.20.0",
   "dependencies": {
-    "bumpp": "^10.3.1"
+    "@antfu/eslint-config": "^6.2.0",
+    "bumpp": "^10.3.1",
+    "eslint": "^9.39.1"
   }
 }
