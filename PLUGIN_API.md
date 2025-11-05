@@ -298,7 +298,7 @@ When clicked, VSCode will open the file at the exact line and column.
 
 ## Example Plugins
 
-See [examples/custom-rule-plugin.ts](packages/vitals/examples/custom-rule-plugin.ts) for a complete example.
+See [examples/custom-rule-plugin.ts](packages/core/examples/custom-rule-plugin.ts) for a complete example.
 
 ## Publishing Plugins
 

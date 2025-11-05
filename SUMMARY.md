@@ -111,7 +111,7 @@ pnpm analyze packages/nuxt-test
 ```
 ceviz/
 ├── packages/
-│   ├── vitals/              # Main analyzer package
+│   ├── core/                # Main analyzer package
 │   │   ├── src/
 │   │   │   ├── analyzer.ts      # Core analysis engine
 │   │   │   ├── scanner.ts       # File scanner

@@ -49,7 +49,7 @@ pnpm add -D ceviz
 pnpm exec ceviz analyze
 
 # Or using node directly
-node packages/vitals/dist/cli.mjs analyze
+node packages/core/dist/cli.mjs analyze
 
 # Analyze specific path
 ceviz analyze ./my-project
@@ -103,24 +103,16 @@ export default defineConfig({
 - ✅ IntelliSense for rule names and severity levels
 - ✅ Vite/Nuxt-style DX powered by [c12](https://github.com/unjs/c12)
 
-### Framework Analysis (NEW!)
+### Framework Analysis
 
-Analyze framework code in node_modules to find performance issues and report them to framework maintainers:
+Ceviz can also analyze framework code in node_modules to help you report performance issues to maintainers:
 
 ```bash
-# Analyze Nuxt core (run from project directory with node_modules)
-cd packages/nuxt-test
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
-
-# Generate interactive HTML report
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --html
-
-# Analyze multiple frameworks
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt,vite,vue
-
-# Generate JSON report for GitHub issues
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
+# Analyze any framework in your node_modules
+ceviz analyze . --scan-deps --target-deps nuxt,vite,vue
 ```
+
+For detailed framework analysis instructions, see [FRAMEWORK_ANALYSIS.md](FRAMEWORK_ANALYSIS.md).
 
 ### Example Output
 
