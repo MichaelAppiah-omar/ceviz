@@ -110,27 +110,29 @@ pnpm analyze examples/nuxt-test
 
 ```
 ceviz/
-├── packages/
-│   ├── core/                # Main analyzer package
-│   │   ├── src/
-│   │   │   ├── analyzer.ts      # Core analysis engine
-│   │   │   ├── scanner.ts       # File scanner
-│   │   │   ├── types.ts         # TypeScript types
-│   │   │   ├── rules/           # Performance rules
-│   │   │   │   ├── cpu/         # CPU rules
-│   │   │   │   ├── memory/      # Memory rules
-│   │   │   │   └── io/          # I/O rules
-│   │   │   ├── reporters/       # Output formatters
-│   │   │   ├── cli.ts           # CLI interface
-│   │   │   └── index.ts         # Public API
-│   │   └── dist/                # Built files
-│   │
+├── src/                     # Main analyzer package
+│   ├── src/
+│   │   ├── analyzer.ts      # Core analysis engine
+│   │   ├── scanner.ts       # File scanner
+│   │   ├── types.ts         # TypeScript types
+│   │   ├── rules/           # Performance rules
+│   │   │   ├── cpu/         # CPU rules
+│   │   │   ├── memory/      # Memory rules
+│   │   │   └── io/          # I/O rules
+│   │   ├── reporters/       # Output formatters
+│   │   ├── cli.ts           # CLI interface
+│   │   └── index.ts         # Public API
+│   ├── dist/                # Built files
+│   └── package.json         # Package manifest
+│
+├── examples/
 │   ├── test-project/        # Test project with bad code
 │   └── nuxt-test/           # Real Nuxt project for testing
 │
-├── README.md                # Full documentation
-├── SUMMARY.md              # This file
-└── pnpm-workspace.yaml     # Workspace config
+├── assets/                  # Banner & screenshots
+├── README.md                # Full documentation (symlink)
+├── SUMMARY.md               # This file
+└── pnpm-workspace.yaml      # Workspace config
 ```
 
 ## 🎉 Status
