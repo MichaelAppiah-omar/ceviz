@@ -47,11 +47,8 @@ pnpm add -D ceviz
 ### Basic Analysis (User Code)
 
 ```bash
-# Using pnpm exec (in workspace)
-pnpm exec ceviz analyze
-
-# Or using node directly
-node packages/core/dist/cli.mjs analyze
+# Analyze current directory
+ceviz analyze
 
 # Analyze specific path
 ceviz analyze ./my-project
