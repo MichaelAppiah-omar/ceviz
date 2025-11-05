@@ -1,31 +1,31 @@
-import type { VitalsPlugin, PluginContext, Rule, Reporter, VitalsConfig, ProjectContext } from './types.js'
+import type { CevizPlugin, PluginContext, Rule, Reporter, CevizConfig, ProjectContext } from './types.js'
 import { pathToFileURL } from 'node:url'
 import { resolve } from 'node:path'
 import { createHooks } from 'hookable'
 import type { Hookable } from 'hookable'
 
-export interface VitalsHooks {
+export interface CevizHooks {
   'plugin:loading': (pluginName: string) => void
-  'plugin:loaded': (plugin: VitalsPlugin) => void
+  'plugin:loaded': (plugin: CevizPlugin) => void
   'rule:added': (rule: Rule) => void
   'reporter:added': (reporter: Reporter) => void
   'analysis:start': (context: ProjectContext) => void
   'analysis:file': (filePath: string) => void
   'analysis:complete': (issuesCount: number) => void
-  'config:resolved': (config: VitalsConfig) => void
+  'config:resolved': (config: CevizConfig) => void
 }
 
 export class PluginLoader {
-  private plugins: VitalsPlugin[] = []
+  private plugins: CevizPlugin[] = []
   private rules: Rule[] = []
   private reporters: Reporter[] = []
-  public hooks: Hookable<VitalsHooks>
+  public hooks: Hookable<CevizHooks>
 
   constructor() {
-    this.hooks = createHooks<VitalsHooks>()
+    this.hooks = createHooks<CevizHooks>()
   }
 
-  async loadPlugins(config: VitalsConfig, projectContext: ProjectContext): Promise<void> {
+  async loadPlugins(config: CevizConfig, projectContext: ProjectContext): Promise<void> {
     if (!config.plugins || config.plugins.length === 0) {
       return
     }
@@ -43,7 +43,7 @@ export class PluginLoader {
 
   private async loadPluginByPath(
     pluginPath: string,
-    config: VitalsConfig,
+    config: CevizConfig,
     projectContext: ProjectContext
   ): Promise<void> {
     try {
@@ -71,8 +71,8 @@ export class PluginLoader {
   }
 
   private async registerPlugin(
-    plugin: VitalsPlugin,
-    config: VitalsConfig,
+    plugin: CevizPlugin,
+    config: CevizConfig,
     projectContext: ProjectContext
   ): Promise<void> {
     const context: PluginContext = {
@@ -107,7 +107,7 @@ export class PluginLoader {
     console.log(`✅ Plugin loaded: ${plugin.name}${plugin.version ? ` v${plugin.version}` : ''}`)
   }
 
-  private isValidPlugin(plugin: any): plugin is VitalsPlugin {
+  private isValidPlugin(plugin: any): plugin is CevizPlugin {
     return plugin && typeof plugin === 'object' && typeof plugin.name === 'string'
   }
 
@@ -137,7 +137,7 @@ export class PluginLoader {
     return this.reporters
   }
 
-  getPlugins(): VitalsPlugin[] {
+  getPlugins(): CevizPlugin[] {
     return this.plugins
   }
 }

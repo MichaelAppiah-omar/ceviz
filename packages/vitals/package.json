@@ -2,7 +2,7 @@
   "name": "ceviz",
   "version": "0.0.1",
   "type": "module",
-  "description": "Performance analyzer for Node.js/Nuxt projects - Ceviz ⚡",
+  "description": "Lightning-fast performance analyzer for all npm packages - Ceviz ⚡",
   "bin": {
     "ceviz": "./dist/cli.mjs"
   },

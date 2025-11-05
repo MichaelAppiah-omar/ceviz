@@ -4,7 +4,7 @@
 
 # ⚡ Ceviz
 
-**Lightning-fast performance analyzer for Node.js/Nuxt projects**
+**Lightning-fast performance analyzer for all npm packages**
 
 </div>
 

@@ -123,7 +123,7 @@ export interface ProjectContext {
 }
 
 // Plugin System
-export interface VitalsPlugin {
+export interface CevizPlugin {
   name: string
   version?: string
   rules?: Rule[]
@@ -135,7 +135,7 @@ export interface PluginContext {
   addRule: (rule: Rule) => void
   addReporter: (reporter: Reporter) => void
   hooks: any // Hookable instance
-  config: VitalsConfig
+  config: CevizConfig
   projectContext: ProjectContext
 }
 
@@ -144,8 +144,8 @@ export interface Reporter {
   report: (result: AnalysisResult, outputPath?: string) => void | Promise<void>
 }
 
-export interface VitalsConfig {
-  plugins?: (VitalsPlugin | string)[]
+export interface CevizConfig {
+  plugins?: (CevizPlugin | string)[]
   rules?: RuleConfig
   reporters?: string[]
   scanDeps?: boolean

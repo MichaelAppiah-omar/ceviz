@@ -57,7 +57,7 @@ program
       // Output
       if (options.html) {
         const htmlReporter = new HtmlReporter()
-        const outputPath = typeof options.html === 'string' ? options.html : 'vitals-report.html'
+        const outputPath = typeof options.html === 'string' ? options.html : 'ceviz-report.html'
         await htmlReporter.report(result, outputPath, true)
       } else if (options.json) {
         const jsonReporter = new JsonReporter()

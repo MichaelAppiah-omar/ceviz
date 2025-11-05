@@ -1,4 +1,4 @@
-import type { VitalsConfig } from './types.js'
+import type { CevizConfig } from './types.js'
 import { loadConfig } from 'c12'
 
 /**
@@ -18,15 +18,15 @@ import { loadConfig } from 'c12'
  * })
  * ```
  */
-export function defineConfig(config: VitalsConfig): VitalsConfig {
+export function defineConfig(config: CevizConfig): CevizConfig {
   return config
 }
 
 /**
  * Load Ceviz configuration from ceviz.config.ts/js/mjs
  */
-export async function resolveConfig(cwd: string = process.cwd()): Promise<VitalsConfig> {
-  const { config = {} } = await loadConfig<VitalsConfig>({
+export async function resolveConfig(cwd: string = process.cwd()): Promise<CevizConfig> {
+  const { config = {} } = await loadConfig<CevizConfig>({
     cwd,
     name: 'ceviz',
     configFile: 'ceviz.config',
@@ -42,16 +42,16 @@ export async function resolveConfig(cwd: string = process.cwd()): Promise<Vitals
     globalRc: false,
   })
 
-  return config as VitalsConfig
+  return config as CevizConfig
 }
 
 /**
  * Merge CLI options with config file
  */
 export function mergeConfig(
-  fileConfig: VitalsConfig,
-  cliOptions: Partial<VitalsConfig>
-): VitalsConfig {
+  fileConfig: CevizConfig,
+  cliOptions: Partial<CevizConfig>
+): CevizConfig {
   return {
     ...fileConfig,
     ...cliOptions,
