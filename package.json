@@ -13,7 +13,7 @@
     "analyze": "pnpm --filter ceviz build && node packages/core/dist/cli.mjs analyze",
     "test": "pnpm --filter ceviz test",
     "bumpp": "bumpp package.json packages/*/package.json",
-    "release": "cd packages/core && pnpm pu:release",
+    "release": "pnpm bumpp && cd packages/core && pnpm pu:release",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
