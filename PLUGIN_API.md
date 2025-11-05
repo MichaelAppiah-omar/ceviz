@@ -1,6 +1,6 @@
-# Vitals Plugin API
+# Viper Plugin API
 
-Vitals supports a powerful plugin system that allows you to:
+Viper supports a powerful plugin system that allows you to:
 - Create custom performance rules
 - Add custom reporters
 - Hook into the analysis lifecycle
@@ -11,8 +11,8 @@ Vitals supports a powerful plugin system that allows you to:
 ### 1. Create a Plugin
 
 ```typescript
-// vitals-plugins/my-plugin.ts
-import type { VitalsPlugin, Rule, RuleContext, Issue } from '@vitals/analyzer'
+// viper-plugins/my-plugin.ts
+import type { ViperPlugin, Rule, RuleContext, Issue } from 'viper'
 
 const myCustomRule: Rule = {
   id: 'my-custom-rule',
@@ -28,7 +28,7 @@ const myCustomRule: Rule = {
   },
 }
 
-const myPlugin: VitalsPlugin = {
+const myPlugin: ViperPlugin = {
   name: 'my-plugin',
   version: '1.0.0',
   rules: [myCustomRule],
@@ -39,19 +39,19 @@ export default myPlugin
 
 ### 2. Use the Plugin
 
-Create `vitals.config.ts`:
+Create `viper.config.ts`:
 
 ```typescript
-// vitals.config.ts
-import { defineConfig } from '@vitals/analyzer'
-import myPlugin from './vitals-plugins/my-plugin.js'
+// viper.config.ts
+import { defineConfig } from 'viper'
+import myPlugin from './viper-plugins/my-plugin.js'
 
 export default defineConfig({
   plugins: [
     myPlugin,
     // Or load from npm:
-    'vitals-plugin-vue',
-    'vitals-plugin-react',
+    'viper-plugin-vue',
+    'viper-plugin-react',
   ],
 
   // Configure rules
@@ -70,13 +70,13 @@ TypeScript will provide full autocomplete and type checking!
 ### 3. Run Analysis
 
 ```bash
-pnpm exec vitals analyze --config vitals.config.ts
+pnpm exec viper analyze --config viper.config.ts
 ```
 
 ## Plugin Interface
 
 ```typescript
-interface VitalsPlugin {
+interface ViperPlugin {
   name: string
   version?: string
   rules?: Rule[]
@@ -94,7 +94,7 @@ interface PluginContext {
   addRule: (rule: Rule) => void
   addReporter: (reporter: Reporter) => void
   hooks: Hookable // See Hooks section
-  config: VitalsConfig
+  config: ViperConfig
   projectContext: ProjectContext
 }
 ```
@@ -205,27 +205,27 @@ const expensiveRegexRule: Rule = {
 
 ## Hooks System
 
-Vitals uses [unjs/hookable](https://github.com/unjs/hookable) for lifecycle hooks.
+Viper uses [unjs/hookable](https://github.com/unjs/hookable) for lifecycle hooks.
 
 ### Available Hooks
 
 ```typescript
-interface VitalsHooks {
+interface ViperHooks {
   'plugin:loading': (pluginName: string) => void
-  'plugin:loaded': (plugin: VitalsPlugin) => void
+  'plugin:loaded': (plugin: ViperPlugin) => void
   'rule:added': (rule: Rule) => void
   'reporter:added': (reporter: Reporter) => void
   'analysis:start': (context: ProjectContext) => void
   'analysis:file': (filePath: string) => void
   'analysis:complete': (issuesCount: number) => void
-  'config:resolved': (config: VitalsConfig) => void
+  'config:resolved': (config: ViperConfig) => void
 }
 ```
 
 ### Using Hooks
 
 ```typescript
-const myPlugin: VitalsPlugin = {
+const myPlugin: ViperPlugin = {
   name: 'my-plugin',
   setup: async (context) => {
     // Listen to hooks
@@ -247,12 +247,12 @@ const myPlugin: VitalsPlugin = {
 ## Creating Custom Reporters
 
 ```typescript
-import type { Reporter, AnalysisResult } from '@vitals/analyzer'
+import type { Reporter, AnalysisResult } from 'viper'
 
 const markdownReporter: Reporter = {
   name: 'markdown',
   report: async (result: AnalysisResult, outputPath?: string) => {
-    const markdown = `# Vitals Report
+    const markdown = `# Viper Report
 
 ## Summary
 - Files analyzed: ${result.summary.analyzedFiles}
@@ -278,7 +278,7 @@ ${result.issues.map(issue => `
   },
 }
 
-const myPlugin: VitalsPlugin = {
+const myPlugin: ViperPlugin = {
   name: 'my-plugin',
   reporters: [markdownReporter],
 }
@@ -298,19 +298,19 @@ When clicked, VSCode will open the file at the exact line and column.
 
 ## Example Plugins
 
-See [examples/custom-rule-plugin.ts](packages/vitals/examples/custom-rule-plugin.ts) for a complete example.
+See [examples/custom-rule-plugin.ts](packages/viper/examples/custom-rule-plugin.ts) for a complete example.
 
 ## Publishing Plugins
 
 To publish a plugin to npm:
 
-1. Name it with `vitals-plugin-` prefix: `vitals-plugin-vue`
-2. Export a default VitalsPlugin object
+1. Name it with `viper-plugin-` prefix: `viper-plugin-vue`
+2. Export a default ViperPlugin object
 3. Publish to npm
 
 ```json
 {
-  "name": "vitals-plugin-vue",
+  "name": "viper-plugin-vue",
   "version": "1.0.0",
   "main": "dist/index.js",
   "type": "module"
@@ -320,22 +320,22 @@ To publish a plugin to npm:
 Users can then install and use it:
 
 ```bash
-pnpm add -D vitals-plugin-vue
+pnpm add -D viper-plugin-vue
 ```
 
 ```typescript
-// vitals.config.ts
+// viper.config.ts
 export default defineConfig({
-  plugins: ['vitals-plugin-vue']
+  plugins: ['viper-plugin-vue']
 })
 ```
 
 ## Community Plugins
 
-- `vitals-plugin-vue` - Vue 3 specific rules
-- `vitals-plugin-react` - React specific rules
-- `vitals-plugin-nuxt` - Nuxt 3 specific rules
-- `vitals-plugin-nextjs` - Next.js specific rules
+- `viper-plugin-vue` - Vue 3 specific rules
+- `viper-plugin-react` - React specific rules
+- `viper-plugin-nuxt` - Nuxt 3 specific rules
+- `viper-plugin-nextjs` - Next.js specific rules
 
 _(Coming soon - contribute yours!)_
 

@@ -1,13 +1,13 @@
 /**
- * Example Vitals Plugin
+ * Example Viper Plugin
  *
- * This shows how to create custom rules for Vitals analyzer.
+ * This shows how to create custom rules for Viper analyzer.
  *
  * Usage:
- * 1. Create vitals.config.ts in your project root:
+ * 1. Create viper.config.ts in your project root:
  *
- * import { defineConfig } from '@vitals/analyzer'
- * import customPlugin from './vitals-plugins/my-plugin.js'
+ * import { defineConfig } from 'viper'
+ * import customPlugin from './viper-plugins/my-plugin.js'
  *
  * export default defineConfig({
  *   plugins: [customPlugin]
@@ -16,11 +16,11 @@
  * 2. Or load from npm package:
  *
  * export default defineConfig({
- *   plugins: ['vitals-plugin-vue', 'vitals-plugin-react']
+ *   plugins: ['viper-plugin-vue', 'viper-plugin-react']
  * })
  */
 
-import type { VitalsPlugin, Rule, RuleContext, Issue } from '../src/types.js'
+import type { ViperPlugin, Rule, RuleContext, Issue } from '../src/types.js'
 
 // Example: Detect console.log() in production code
 const noConsoleLogRule: Rule = {
@@ -155,8 +155,8 @@ const noTodoCommentsRule: Rule = {
 }
 
 // Export the plugin
-const customRulePlugin: VitalsPlugin = {
-  name: 'vitals-custom-rules',
+const customRulePlugin: ViperPlugin = {
+  name: 'viper-custom-rules',
   version: '1.0.0',
 
   // Provide custom rules

@@ -1,25 +1,4 @@
-import type { AnalysisResult } from '../types.js'
-import { writeFileSync } from 'fs'
-import { basename } from 'path'
-import open from 'open'
-
-export class HtmlReporter {
-  async report(result: AnalysisResult, outputPath: string, autoOpen = true): Promise<void> {
-    const html = this.generateHtml(result)
-    writeFileSync(outputPath, html, 'utf-8')
-
-    console.log(`\n✅ HTML report saved to: ${outputPath}`)
-
-    if (autoOpen) {
-      console.log('🌐 Opening in browser...\n')
-      await open(outputPath)
-    }
-  }
-
-  private generateHtml(result: AnalysisResult): string {
-    const { summary, issues, metrics } = result
-
-    return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -356,35 +335,35 @@ export class HtmlReporter {
 <body>
   <div class="container">
     <header>
-      <h1>⚡ Viper Performance Report</h1>
-      <p class="subtitle">Generated on ${new Date().toLocaleString()}</p>
+      <h1>🩺 Viper Performance Report</h1>
+      <p class="subtitle">Generated on 11/5/2025, 7:58:17 PM</p>
     </header>
 
     <div class="summary-cards">
       <div class="card">
         <div class="card-title">Files Analyzed</div>
-        <div class="card-value">${summary.analyzedFiles}</div>
+        <div class="card-value">1</div>
         <div class="card-label">Total files scanned</div>
       </div>
 
       <div class="card">
         <div class="card-title">Total Issues</div>
-        <div class="card-value ${summary.totalIssues === 0 ? 'success' : 'critical'}">${summary.totalIssues}</div>
+        <div class="card-value critical">7</div>
         <div class="card-label">
-          <span class="critical">${summary.critical} critical</span> ·
-          <span class="warning">${summary.warnings} warnings</span>
+          <span class="critical">6 critical</span> ·
+          <span class="warning">1 warnings</span>
         </div>
       </div>
 
       <div class="card score-card">
         <div class="card-title">Performance Score</div>
-        <div class="card-value">${summary.score}/100</div>
-        <div class="card-label">Grade: ${summary.grade}</div>
+        <div class="card-value">37/100</div>
+        <div class="card-label">Grade: F</div>
       </div>
 
       <div class="card">
         <div class="card-title">Analysis Time</div>
-        <div class="card-value">${result.duration}ms</div>
+        <div class="card-value">2ms</div>
         <div class="card-label">Blazing fast ⚡</div>
       </div>
     </div>
@@ -394,11 +373,11 @@ export class HtmlReporter {
         <div class="metric-title">⚡ CPU Metrics</div>
         <div class="metric-item">
           <span class="metric-label">Worst Complexity</span>
-          <span class="metric-value">${metrics.cpu.worstComplexity}</span>
+          <span class="metric-value">O(1)</span>
         </div>
         <div class="metric-item">
           <span class="metric-label">Hotspots</span>
-          <span class="metric-value">${metrics.cpu.hotspots.length}</span>
+          <span class="metric-value">4</span>
         </div>
       </div>
 
@@ -406,11 +385,11 @@ export class HtmlReporter {
         <div class="metric-title">💾 Memory Metrics</div>
         <div class="metric-item">
           <span class="metric-label">Est. Baseline</span>
-          <span class="metric-value">${metrics.memory.estimatedBaseline}</span>
+          <span class="metric-value">4KB</span>
         </div>
         <div class="metric-item">
           <span class="metric-label">Memory Leaks</span>
-          <span class="metric-value ${metrics.memory.leaks > 0 ? 'critical' : 'success'}">${metrics.memory.leaks}</span>
+          <span class="metric-value critical">1</span>
         </div>
       </div>
 
@@ -418,11 +397,11 @@ export class HtmlReporter {
         <div class="metric-title">📡 I/O Metrics</div>
         <div class="metric-item">
           <span class="metric-label">Blocking Ops</span>
-          <span class="metric-value ${metrics.io.blockingOps > 0 ? 'critical' : 'success'}">${metrics.io.blockingOps}</span>
+          <span class="metric-value critical">1</span>
         </div>
         <div class="metric-item">
           <span class="metric-label">Waterfalls</span>
-          <span class="metric-value">${metrics.io.waterfalls}</span>
+          <span class="metric-value">1</span>
         </div>
       </div>
     </div>
@@ -430,12 +409,12 @@ export class HtmlReporter {
     <div class="filters">
       <div class="filter-group">
         <span class="filter-label">Filter:</span>
-        <button class="filter-btn active" data-filter="all">All (${issues.length})</button>
-        <button class="filter-btn" data-filter="critical">Critical (${summary.critical})</button>
-        <button class="filter-btn" data-filter="warning">Warning (${summary.warnings})</button>
-        <button class="filter-btn" data-filter="cpu">⚡ CPU (${issues.filter(i => i.category === 'cpu').length})</button>
-        <button class="filter-btn" data-filter="memory">💾 Memory (${issues.filter(i => i.category === 'memory').length})</button>
-        <button class="filter-btn" data-filter="io">📡 I/O (${issues.filter(i => i.category === 'io').length})</button>
+        <button class="filter-btn active" data-filter="all">All (7)</button>
+        <button class="filter-btn" data-filter="critical">Critical (6)</button>
+        <button class="filter-btn" data-filter="warning">Warning (1)</button>
+        <button class="filter-btn" data-filter="cpu">⚡ CPU (4)</button>
+        <button class="filter-btn" data-filter="memory">💾 Memory (1)</button>
+        <button class="filter-btn" data-filter="io">📡 I/O (2)</button>
       </div>
       <div class="filter-group" style="margin-top: 1rem;">
         <input type="search" id="searchInput" placeholder="Search issues or files...">
@@ -454,45 +433,203 @@ export class HtmlReporter {
           </tr>
         </thead>
         <tbody id="issuesBody">
-          ${issues.length === 0 ? `
-            <tr>
-              <td colspan="5">
-                <div class="empty-state">
-                  <div class="empty-state-icon">🎉</div>
-                  <h3>No performance issues found!</h3>
-                  <p>Your code looks great!</p>
-                </div>
-              </td>
-            </tr>
-          ` : issues.map(issue => `
-            <tr data-severity="${issue.severity}" data-category="${issue.category}">
+          
+            <tr data-severity="critical" data-category="cpu">
               <td>
-                <span class="severity-badge severity-${issue.severity}">${issue.severity}</span>
+                <span class="severity-badge severity-critical">critical</span>
               </td>
               <td>
-                <span class="category-icon">${this.getCategoryIcon(issue.category)}</span>
-                ${issue.category}
+                <span class="category-icon">⚡</span>
+                cpu
               </td>
               <td>
-                <div class="issue-message">${issue.message}</div>
-                ${issue.impact.complexity ? `<div class="issue-suggestion">Complexity: <strong>${issue.impact.complexity}</strong></div>` : ''}
-                ${issue.impact.estimate ? `<div class="issue-suggestion">Impact: ${issue.impact.estimate}</div>` : ''}
+                <div class="issue-message">Nested loop detected (O(n²) complexity)</div>
+                <div class="issue-suggestion">Complexity: <strong>O(n²)</strong></div>
+                <div class="issue-suggestion">Impact: 100ms → 10s for 1000 items</div>
               </td>
               <td>
                 <div class="file-path">
-                  <a href="${this.getVSCodeLink(issue.location.file, issue.location.line, issue.location.column)}"
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts:8:4"
                      class="vscode-link"
-                     title="Open in VSCode: ${issue.location.file}:${issue.location.line}:${issue.location.column}">
-                    ${this.shortenPath(issue.location.file)}
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:8:4">
+                    .../vitals/packages/test-project/bad-code.ts
                   </a>
                 </div>
-                ${issue.location.line > 0 ? `<div class="issue-suggestion">Line ${issue.location.line}${issue.location.column > 0 ? `:${issue.location.column}` : ''}</div>` : ''}
+                <div class="issue-suggestion">Line 8:4</div>
               </td>
               <td>
-                <div class="issue-suggestion">${issue.suggestion?.fix || 'No suggestion available'}</div>
+                <div class="issue-suggestion">Use Map/Set for O(1) lookups instead of nested loops</div>
               </td>
             </tr>
-          `).join('')}
+          
+            <tr data-severity="critical" data-category="cpu">
+              <td>
+                <span class="severity-badge severity-critical">critical</span>
+              </td>
+              <td>
+                <span class="category-icon">⚡</span>
+                cpu
+              </td>
+              <td>
+                <div class="issue-message">Nested loop detected (O(n²) complexity)</div>
+                <div class="issue-suggestion">Complexity: <strong>O(n²)</strong></div>
+                <div class="issue-suggestion">Impact: 100ms → 10s for 1000 items</div>
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts:20:21"
+                     class="vscode-link"
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:20:21">
+                    .../vitals/packages/test-project/bad-code.ts
+                  </a>
+                </div>
+                <div class="issue-suggestion">Line 20:21</div>
+              </td>
+              <td>
+                <div class="issue-suggestion">Use Map/Set for O(1) lookups instead of nested loops</div>
+              </td>
+            </tr>
+          
+            <tr data-severity="critical" data-category="cpu">
+              <td>
+                <span class="severity-badge severity-critical">critical</span>
+              </td>
+              <td>
+                <span class="category-icon">⚡</span>
+                cpu
+              </td>
+              <td>
+                <div class="issue-message">Array.filter() inside loop creates O(n*m) complexity</div>
+                <div class="issue-suggestion">Complexity: <strong>O(n*m)</strong></div>
+                <div class="issue-suggestion">Impact: 10ms → 5s for 1000x1000 items</div>
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts:19:9"
+                     class="vscode-link"
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:19:9">
+                    .../vitals/packages/test-project/bad-code.ts
+                  </a>
+                </div>
+                <div class="issue-suggestion">Line 19:9</div>
+              </td>
+              <td>
+                <div class="issue-suggestion">Convert array to Map/Set before the loop for O(1) lookups</div>
+              </td>
+            </tr>
+          
+            <tr data-severity="critical" data-category="cpu">
+              <td>
+                <span class="severity-badge severity-critical">critical</span>
+              </td>
+              <td>
+                <span class="category-icon">⚡</span>
+                cpu
+              </td>
+              <td>
+                <div class="issue-message">Array.find() inside loop creates O(n*m) complexity</div>
+                <div class="issue-suggestion">Complexity: <strong>O(n*m)</strong></div>
+                <div class="issue-suggestion">Impact: 10ms → 5s for 1000x1000 items</div>
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts:20:21"
+                     class="vscode-link"
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:20:21">
+                    .../vitals/packages/test-project/bad-code.ts
+                  </a>
+                </div>
+                <div class="issue-suggestion">Line 20:21</div>
+              </td>
+              <td>
+                <div class="issue-suggestion">Convert array to Map/Set before the loop for O(1) lookups</div>
+              </td>
+            </tr>
+          
+            <tr data-severity="critical" data-category="memory">
+              <td>
+                <span class="severity-badge severity-critical">critical</span>
+              </td>
+              <td>
+                <span class="category-icon">💾</span>
+                memory
+              </td>
+              <td>
+                <div class="issue-message">setInterval/setTimeout without cleanup causes memory leak</div>
+                
+                <div class="issue-suggestion">Impact: Memory grows indefinitely, ~1-10MB per instance</div>
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts:34"
+                     class="vscode-link"
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:34:0">
+                    .../vitals/packages/test-project/bad-code.ts
+                  </a>
+                </div>
+                <div class="issue-suggestion">Line 34</div>
+              </td>
+              <td>
+                <div class="issue-suggestion">Clear interval/timeout in cleanup lifecycle (onUnmounted, useEffect return, etc.)</div>
+              </td>
+            </tr>
+          
+            <tr data-severity="critical" data-category="io">
+              <td>
+                <span class="severity-badge severity-critical">critical</span>
+              </td>
+              <td>
+                <span class="category-icon">📡</span>
+                io
+              </td>
+              <td>
+                <div class="issue-message">readFileSync() blocks the event loop</div>
+                
+                <div class="issue-suggestion">Impact: 50-200ms block</div>
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts:27:15"
+                     class="vscode-link"
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:27:15">
+                    .../vitals/packages/test-project/bad-code.ts
+                  </a>
+                </div>
+                <div class="issue-suggestion">Line 27:15</div>
+              </td>
+              <td>
+                <div class="issue-suggestion">Use async version: readFile()</div>
+              </td>
+            </tr>
+          
+            <tr data-severity="warning" data-category="io">
+              <td>
+                <span class="severity-badge severity-warning">warning</span>
+              </td>
+              <td>
+                <span class="category-icon">📡</span>
+                io
+              </td>
+              <td>
+                <div class="issue-message">3 sequential await calls create waterfall</div>
+                
+                <div class="issue-suggestion">Impact: 3x slower than necessary</div>
+              </td>
+              <td>
+                <div class="file-path">
+                  <a href="vscode://file/Users/code/Work/example/vitals/packages/test-project/bad-code.ts"
+                     class="vscode-link"
+                     title="Open in VSCode: /Users/code/Work/example/vitals/packages/test-project/bad-code.ts:0:0">
+                    .../vitals/packages/test-project/bad-code.ts
+                  </a>
+                </div>
+                
+              </td>
+              <td>
+                <div class="issue-suggestion">Use Promise.all() to run these operations in parallel</div>
+              </td>
+            </tr>
+          
         </tbody>
       </table>
     </div>
@@ -542,32 +679,4 @@ export class HtmlReporter {
     }
   </script>
 </body>
-</html>`
-  }
-
-  private getCategoryIcon(category: string): string {
-    const icons: Record<string, string> = {
-      cpu: '⚡',
-      memory: '💾',
-      io: '📡',
-      bundle: '📦',
-      framework: '🔧',
-    }
-    return icons[category] || '●'
-  }
-
-  private shortenPath(path: string): string {
-    const parts = path.split('/')
-    if (parts.length > 5) {
-      return '.../' + parts.slice(-4).join('/')
-    }
-    return path
-  }
-
-  private getVSCodeLink(file: string, line: number, column: number): string {
-    // VSCode URL format: vscode://file/absolute/path:line:column
-    const lineStr = line > 0 ? `:${line}` : ''
-    const colStr = column > 0 ? `:${column}` : ''
-    return `vscode://file${file}${lineStr}${colStr}`
-  }
-}
+</html>

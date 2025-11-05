@@ -1,10 +1,10 @@
 {
-  "name": "@vitals/analyzer",
+  "name": "viper",
   "version": "0.1.0",
   "type": "module",
-  "description": "Automatic performance analyzer for Node.js/Nuxt projects",
+  "description": "Performance analyzer for Node.js/Nuxt projects - Vi-Performance ⚡",
   "bin": {
-    "vitals": "./dist/cli.mjs"
+    "viper": "./dist/cli.mjs"
   },
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",

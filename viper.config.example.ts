@@ -1,14 +1,14 @@
-import { defineConfig } from '@vitals/analyzer'
+import { defineConfig } from 'viper'
 
 export default defineConfig({
   // Load custom plugins
   plugins: [
     // From npm
-    // 'vitals-plugin-vue',
-    // 'vitals-plugin-react',
+    // 'viper-plugin-vue',
+    // 'viper-plugin-react',
 
     // From local file
-    // './vitals-plugins/my-custom-plugin.js',
+    // './viper-plugins/my-custom-plugin.js',
   ],
 
   // Configure rules

@@ -1,8 +1,8 @@
-# 🩺 Vitals
+# ⚡ Viper
 
-**Automatic performance analyzer for Node.js, Nuxt, and Vite projects**
+**Vi-Performance - Lightning-fast performance analyzer for Node.js/Nuxt projects** ⚡
 
-Vitals automatically scans your codebase and detects performance issues that slow down your application:
+Viper automatically scans your codebase and detects performance issues that slow down your application:
 
 - 🔍 **O(n²) and O(n³) complexity** - Nested loops and inefficient algorithms
 - 💾 **Memory leaks** - Unclosed intervals, event listeners, and memory bloat
@@ -25,13 +25,13 @@ Vitals automatically scans your codebase and detects performance issues that slo
 
 ```bash
 # Run without installing
-npx @vitals/analyzer analyze
+npx viper analyze
 
 # Or install globally
-pnpm add -g @vitals/analyzer
+pnpm add -g viper
 
 # Or add to your project
-pnpm add -D @vitals/analyzer
+pnpm add -D viper
 ```
 
 ## Usage
@@ -40,39 +40,39 @@ pnpm add -D @vitals/analyzer
 
 ```bash
 # Using pnpm exec (in workspace)
-pnpm exec vitals analyze
+pnpm exec viper analyze
 
 # Or using node directly
-node packages/vitals/dist/cli.mjs analyze
+node packages/viper/dist/cli.mjs analyze
 
 # Analyze specific path
-pnpm exec vitals analyze ./my-project
+viper analyze ./my-project
 
 # Output as JSON
-pnpm exec vitals analyze --json
+viper analyze --json
 
 # Save JSON to file
-pnpm exec vitals analyze --json report.json
+viper analyze --json report.json
 
 # Generate interactive HTML report (auto-opens in browser)
-pnpm exec vitals analyze --html
-pnpm exec vitals analyze --html report.html
+viper analyze --html
+viper analyze --html report.html
 
 # Use custom config file
-pnpm exec vitals analyze --config vitals.config.ts
+viper analyze --config viper.config.ts
 ```
 
 ### Configuration File
 
-Create `vitals.config.ts` in your project root for full **TypeScript autocomplete and type checking**:
+Create `viper.config.ts` in your project root for full **TypeScript autocomplete and type checking**:
 
 ```typescript
-import { defineConfig } from '@vitals/analyzer'
+import { defineConfig } from 'viper'
 
 export default defineConfig({
   // Load custom plugins
   plugins: [
-    'vitals-plugin-vue',
+    'viper-plugin-vue',
     './my-custom-plugin.js'
   ],
 
@@ -95,7 +95,7 @@ export default defineConfig({
 - ✅ Full TypeScript autocomplete
 - ✅ Type checking for all options
 - ✅ IntelliSense for rule names and severity levels
-- ✅ Nuxt-style DX powered by [c12](https://github.com/unjs/c12)
+- ✅ Vite/Nuxt-style DX powered by [c12](https://github.com/unjs/c12)
 
 ### Framework Analysis (NEW!)
 
@@ -104,22 +104,22 @@ Analyze framework code in node_modules to find performance issues and report the
 ```bash
 # Analyze Nuxt core (run from project directory with node_modules)
 cd packages/nuxt-test
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
+node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt
 
 # Generate interactive HTML report
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --html
+node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --html
 
 # Analyze multiple frameworks
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt,vite,vue
+node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt,vite,vue
 
 # Generate JSON report for GitHub issues
-node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
+node ../viper/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt-issues.json
 ```
 
 ### Example Output
 
 ```
-🩺 Vitals Performance Analysis
+⚡ Viper Performance Analysis
 ────────────────────────────────────────────────────────────
 
 📊 Summary
@@ -182,7 +182,7 @@ node ../vitals/dist/cli.mjs analyze . --scan-deps --target-deps nuxt --json nuxt
   3. Clean up memory leaks → add proper cleanup
 ```
 
-## What Vitals Detects
+## What Viper Detects
 
 ### CPU Issues
 
@@ -267,7 +267,7 @@ const [user, posts, comments] = await Promise.all([
 
 ## Rules
 
-Vitals currently has **5 core rules**:
+Viper currently has **5 core rules**:
 
 | Rule | Category | Severity | Description |
 |------|----------|----------|-------------|
@@ -281,13 +281,13 @@ More rules coming soon!
 
 ## Plugin System
 
-Vitals supports a powerful plugin system for creating custom rules and reporters.
+Viper supports a powerful plugin system for creating custom rules and reporters.
 
 ### Creating a Custom Plugin
 
 ```typescript
-// vitals-plugins/my-plugin.ts
-import type { VitalsPlugin, Rule } from '@vitals/analyzer'
+// viper-plugins/my-plugin.ts
+import type { ViperPlugin, Rule } from '@viper/analyzer'
 
 const myRule: Rule = {
   id: 'no-console-log',
@@ -302,7 +302,7 @@ const myRule: Rule = {
   },
 }
 
-const myPlugin: VitalsPlugin = {
+const myPlugin: ViperPlugin = {
   name: 'my-custom-plugin',
   version: '1.0.0',
   rules: [myRule],
@@ -320,14 +320,14 @@ export default myPlugin
 ### Using Plugins
 
 ```typescript
-// vitals.config.ts
-import { defineConfig } from '@vitals/analyzer'
-import myPlugin from './vitals-plugins/my-plugin.js'
+// viper.config.ts
+import { defineConfig } from '@viper/analyzer'
+import myPlugin from './viper-plugins/my-plugin.js'
 
 export default defineConfig({
   plugins: [
     myPlugin,
-    'vitals-plugin-vue', // Or from npm
+    'viper-plugin-vue', // Or from npm
   ],
 })
 ```
@@ -336,7 +336,7 @@ See [PLUGIN_API.md](PLUGIN_API.md) for complete plugin documentation.
 
 ## CI/CD Integration
 
-Vitals exits with code 1 if critical issues are found, making it perfect for CI/CD:
+Viper exits with code 1 if critical issues are found, making it perfect for CI/CD:
 
 ```yaml
 # GitHub Actions
@@ -344,17 +344,17 @@ name: Performance Check
 on: [pull_request]
 
 jobs:
-  vitals:
+  viper:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
-      - run: pnpm dlx @vitals/analyzer analyze
+      - run: pnpm dlx @viper/analyzer analyze
 ```
 
 ## Real-World Results
 
-Vitals analyzed **Nuxt 4.2.0** and found **243 performance issues**:
+Viper analyzed **Nuxt 4.2.0** and found **243 performance issues**:
 - 85x Array operations in loop (O(n*m))
 - 73x Nested loops (O(n²))
 - 69x Sequential async operations (waterfalls)
@@ -387,7 +387,7 @@ Contributions welcome! Please read our [Contributing Guide](CONTRIBUTING.md) fir
 
 ## License
 
-MIT © Vitals Team
+MIT © Viper Team
 
 ---
 

@@ -2,15 +2,15 @@ import type { VitalsConfig } from './types.js'
 import { loadConfig } from 'c12'
 
 /**
- * Define Vitals configuration with type safety
+ * Define Viper configuration with type safety
  *
  * @example
  * ```ts
- * // vitals.config.ts
- * import { defineConfig } from '@vitals/analyzer'
+ * // viper.config.ts
+ * import { defineConfig } from 'viper'
  *
  * export default defineConfig({
- *   plugins: ['vitals-plugin-vue'],
+ *   plugins: ['viper-plugin-vue'],
  *   rules: {
  *     'nested-loops': 'error',
  *     'no-console-log': 'off'
@@ -23,13 +23,13 @@ export function defineConfig(config: VitalsConfig): VitalsConfig {
 }
 
 /**
- * Load Vitals configuration from vitals.config.ts/js/mjs
+ * Load Viper configuration from viper.config.ts/js/mjs
  */
 export async function resolveConfig(cwd: string = process.cwd()): Promise<VitalsConfig> {
   const { config = {} } = await loadConfig<VitalsConfig>({
     cwd,
-    name: 'vitals',
-    configFile: 'vitals.config',
+    name: 'viper',
+    configFile: 'viper.config',
     defaults: {
       plugins: [],
       rules: {},

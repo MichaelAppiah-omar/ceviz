@@ -1,13 +1,13 @@
 {
-  "name": "vitals-monorepo",
+  "name": "viper-monorepo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter @vitals/analyzer build",
-    "dev": "pnpm --filter @vitals/analyzer dev",
-    "analyze": "pnpm --filter @vitals/analyzer build && node packages/vitals/dist/cli.mjs analyze",
-    "test": "pnpm --filter @vitals/analyzer test"
+    "build": "pnpm --filter viper build",
+    "dev": "pnpm --filter viper dev",
+    "analyze": "pnpm --filter viper build && node packages/vitals/dist/cli.mjs analyze",
+    "test": "pnpm --filter viper test"
   },
   "keywords": [],
   "author": "",
