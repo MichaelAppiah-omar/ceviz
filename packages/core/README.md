@@ -189,8 +189,8 @@ For detailed framework analysis instructions, see [FRAMEWORK_ANALYSIS.md](FRAMEW
 #### Nested Loops (O(n²))
 ```typescript
 // ❌ BAD - O(n²)
-users.forEach(user => {
-  posts.forEach(post => {
+users.forEach((user) => {
+  posts.forEach((post) => {
     if (post.userId === user.id) {
       // ...
     }
@@ -210,7 +210,7 @@ for (const post of posts) {
 #### Array.find() in Loop
 ```typescript
 // ❌ BAD - O(n*m)
-items.filter(item => {
+items.filter((item) => {
   const category = categories.find(cat => cat.id === item.categoryId)
   return category?.active
 })
