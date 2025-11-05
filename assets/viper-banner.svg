@@ -1,0 +1,113 @@
+<svg width="1200" height="300" viewBox="0 0 1200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e27;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1d3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f1729;stop-opacity:1" />
+    </linearGradient>
+
+    <radialGradient id="glow-bg" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#364fc7;stop-opacity:0.08" />
+      <stop offset="100%" style="stop-color:#0a0e27;stop-opacity:0" />
+    </radialGradient>
+
+    <linearGradient id="lightning-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5c7cfa;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#748ffc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5c7cfa;stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="300" fill="url(#bg-gradient)"/>
+
+  <!-- Radial glow overlay -->
+  <ellipse cx="600" cy="150" rx="600" ry="200" fill="url(#glow-bg)"/>
+
+  <!-- Decorative grid pattern with sliding animation -->
+  <g opacity="0.2">
+    <line x1="0" y1="75" x2="1200" y2="75" stroke="#4c6ef5" stroke-width="1" stroke-dasharray="20 20">
+      <animate attributeName="stroke-dashoffset" from="0" to="40" dur="2s" repeatCount="indefinite"/>
+    </line>
+    <line x1="0" y1="150" x2="1200" y2="150" stroke="#4c6ef5" stroke-width="1" stroke-dasharray="20 20">
+      <animate attributeName="stroke-dashoffset" from="40" to="0" dur="2s" repeatCount="indefinite"/>
+    </line>
+    <line x1="0" y1="225" x2="1200" y2="225" stroke="#4c6ef5" stroke-width="1" stroke-dasharray="20 20">
+      <animate attributeName="stroke-dashoffset" from="0" to="40" dur="2s" repeatCount="indefinite"/>
+    </line>
+  </g>
+
+  <!-- Lightning bolt icon with pulse animation -->
+  <g transform="translate(200, 80)">
+    <path d="M60 0 L20 70 L45 70 L30 140 L80 55 L50 55 Z"
+          fill="url(#lightning-gradient)"
+          stroke="#5c7cfa"
+          stroke-width="2"
+          opacity="0.9">
+      <animate attributeName="opacity" values="0.85;0.95;0.85" dur="3s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- VIPER text -->
+  <text x="320" y="130"
+        font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="72"
+        font-weight="800"
+        fill="url(#lightning-gradient)"
+        opacity="0.95">
+    VIPER
+  </text>
+
+  <!-- Subtitle -->
+  <text x="320" y="165"
+        font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="20"
+        font-weight="400"
+        fill="#6c7a89">
+    Vi-Performance - Lightning-fast performance analyzer
+  </text>
+
+  <!-- Feature badges -->
+  <g transform="translate(320, 190)">
+    <!-- Zero Config badge -->
+    <rect x="0" y="0" width="110" height="28" rx="14" fill="#0a0e27" stroke="#2a2f3e" stroke-width="1"/>
+    <text x="55" y="19" font-family="monospace" font-size="12" fill="#5c7cfa" text-anchor="middle">Zero Config</text>
+
+    <!-- O(n²) Detection badge -->
+    <rect x="120" y="0" width="130" height="28" rx="14" fill="#0a0e27" stroke="#2a2f3e" stroke-width="1"/>
+    <text x="185" y="19" font-family="monospace" font-size="12" fill="#5c7cfa" text-anchor="middle">O(n²) Detection</text>
+
+    <!-- Memory Leaks badge -->
+    <rect x="260" y="0" width="130" height="28" rx="14" fill="#0a0e27" stroke="#2a2f3e" stroke-width="1"/>
+    <text x="325" y="19" font-family="monospace" font-size="12" fill="#5c7cfa" text-anchor="middle">Memory Leaks</text>
+
+    <!-- CI Ready badge -->
+    <rect x="400" y="0" width="90" height="28" rx="14" fill="#0a0e27" stroke="#2a2f3e" stroke-width="1"/>
+    <text x="445" y="19" font-family="monospace" font-size="12" fill="#5c7cfa" text-anchor="middle">CI Ready</text>
+  </g>
+
+  <!-- Performance metrics visualization -->
+  <g transform="translate(850, 80)" opacity="0.35">
+    <circle cx="30" cy="30" r="25" fill="none" stroke="#5c8a5f" stroke-width="2" stroke-dasharray="5 5" opacity="0.5">
+      <animateTransform attributeName="transform" type="rotate" from="0 30 30" to="360 30 30" dur="10s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="80" cy="30" r="25" fill="none" stroke="#5c7cfa" stroke-width="2" stroke-dasharray="5 5" opacity="0.5">
+      <animateTransform attributeName="transform" type="rotate" from="360 80 30" to="0 80 30" dur="8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="130" cy="30" r="25" fill="none" stroke="#7568b5" stroke-width="2" stroke-dasharray="5 5" opacity="0.5">
+      <animateTransform attributeName="transform" type="rotate" from="0 130 30" to="360 130 30" dur="12s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Bottom accent line -->
+  <rect x="0" y="298" width="1200" height="2" fill="url(#lightning-gradient)" opacity="0.5"/>
+</svg>

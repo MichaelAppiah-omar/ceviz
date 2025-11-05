@@ -1,5 +1,5 @@
 {
-  "name": "viper-monorepo",
+  "name": "viper",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -7,10 +7,15 @@
     "build": "pnpm --filter viper build",
     "dev": "pnpm --filter viper dev",
     "analyze": "pnpm --filter viper build && node packages/vitals/dist/cli.mjs analyze",
-    "test": "pnpm --filter viper test"
+    "test": "pnpm --filter viper test",
+    "bumpp": "bumpp package.json packages/*/package.json",
+    "release": "cd packages/vitals && pnpm pu:release"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "packageManager": "pnpm@10.20.0"
+  "packageManager": "pnpm@10.20.0",
+  "dependencies": {
+    "bumpp": "^10.3.1"
+  }
 }

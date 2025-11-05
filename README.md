@@ -1,6 +1,12 @@
+<div align="center">
+
+![Viper Banner](./assets/viper-banner.svg)
+
 # ⚡ Viper
 
-**Vi-Performance - Lightning-fast performance analyzer for Node.js/Nuxt projects** ⚡
+**Vi-Performance - Lightning-fast performance analyzer for Node.js/Nuxt projects**
+
+</div>
 
 Viper automatically scans your codebase and detects performance issues that slow down your application:
 
@@ -383,7 +389,48 @@ See the [interactive HTML report](nuxt-framework-analysis.html) for details.
 
 ## Contributing
 
-Contributions welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
+**We're building something special here, and we want YOU to be part of it!**
+
+Viper is more than just a tool - it's a movement to make performance analysis accessible, accurate, and actionable for everyone. We're **100% open to contributions** and **wildly open to new ideas**.
+
+### Our Vision
+
+We want to take Viper **far beyond** what it is today. Our goal is to build the **most comprehensive, accurate, and delightful** performance analysis tool in the JavaScript ecosystem - analyzing everything from the smallest edge case to framework-level performance issues.
+
+### We Need Your Help
+
+Whether you're:
+- 🐛 **Finding bugs** - Help us catch edge cases
+- 💡 **Suggesting features** - Share your wildest ideas
+- 🔧 **Writing code** - Contribute rules, reporters, or core features
+- 📝 **Improving docs** - Make Viper easier to understand
+- 🎨 **Designing UX** - Help us build better reports and visualizations
+- 🧪 **Testing** - Run Viper on your projects and share results
+- 🌍 **Spreading the word** - Tell others about Viper
+
+**Every contribution matters!** We're completely open to:
+- New detection rules (regex catastrophic backtracking, excessive re-renders, etc.)
+- Framework-specific analyzers (Nuxt, Next.js, Remix, SvelteKit, Solid)
+- Better reporting formats (PDF, CI annotations, Slack/Discord integrations)
+- Auto-fix capabilities
+- VS Code extension
+- Performance benchmarking
+- Your crazy ideas we haven't thought of yet!
+
+### How to Contribute
+
+1. **Check existing issues** or open a new one to discuss your idea
+2. **Fork the repo** and create a branch
+3. **Make your changes** - write tests if applicable
+4. **Submit a PR** with a clear description
+
+We review PRs quickly and are happy to mentor new contributors!
+
+### Let's Build the Ecosystem Together
+
+Viper is just getting started. With your help, we can make it the go-to tool for performance analysis across the entire JavaScript ecosystem. Let's build something amazing together!
+
+**Join us:** [GitHub Issues](https://github.com/productdevbook/viper/issues)
 
 ## License
 

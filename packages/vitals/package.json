@@ -1,6 +1,6 @@
 {
   "name": "viper",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Performance analyzer for Node.js/Nuxt projects - Vi-Performance ⚡",
   "bin": {
@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "vitest"
+    "test": "vitest",
+    "pu:release": "pnpm build && pnpm publish --no-git-checks --access public"
   },
   "dependencies": {
     "c12": "^3.3.1",
